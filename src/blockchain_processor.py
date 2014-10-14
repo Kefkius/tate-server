@@ -81,7 +81,7 @@ class BlockchainProcessor(Processor):
         while not self.shared.stopped():
             self.main_iteration()
             if self.shared.paused():
-                print_log("bitcoind is responding")
+                print_log("mazacoind is responding")
                 self.shared.unpause()
             time.sleep(10)
 
@@ -109,7 +109,7 @@ class BlockchainProcessor(Processor):
                 respdata = urllib.urlopen(self.bitcoind_url, postdata).read()
                 break
             except:
-                print_log("cannot reach bitcoind...")
+                print_log("cannot reach mazacoind...")
                 self.shared.pause()
                 time.sleep(10)
                 if self.shared.stopped():
@@ -194,8 +194,8 @@ class BlockchainProcessor(Processor):
 
     def read_chunk(self, index):
         with open(self.headers_filename, 'rb') as f:
-            f.seek(index*2016*80)
-            chunk = f.read(2016*80)
+            f.seek(index*80)
+            chunk = f.read(80)
         return chunk.encode('hex')
 
     def write_header(self, header, sync=True):
@@ -207,7 +207,7 @@ class BlockchainProcessor(Processor):
             self.flush_headers()
 
         with self.cache_lock:
-            chunk_index = header.get('block_height')/2016
+            chunk_index = header.get('block_height')
             if self.chunk_cache.get(chunk_index):
                 self.chunk_cache.pop(chunk_index)
 
@@ -579,7 +579,7 @@ class BlockchainProcessor(Processor):
         try:
             respdata = urllib.urlopen(self.bitcoind_url, postdata).read()
         except:
-            logger.error("bitcoind error (getfullblock)",exc_info=True)
+            logger.error("mazacoind error (getfullblock)",exc_info=True)
             self.shared.stop()
 
         r = loads(respdata)
@@ -587,7 +587,7 @@ class BlockchainProcessor(Processor):
         for ir in r:
             if ir['error'] is not None:
                 self.shared.stop()
-                print_log("Error: make sure you run bitcoind with txindex=1; use -reindex if needed.")
+                print_log("Error: make sure you run mazacoind with txindex=1; use -reindex if needed.")
                 raise BaseException(ir['error'])
             rawtxdata.append(ir['result'])
         block['tx'] = rawtxdata
