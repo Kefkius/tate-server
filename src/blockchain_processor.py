@@ -44,6 +44,8 @@ class BlockchainProcessor(Processor):
         self.mempool_lock = threading.Lock()
 
         self.address_queue = Queue()
+        
+        self.chunk_size = 2016
 
         try:
             self.test_reorgs = config.getboolean('leveldb', 'test_reorgs')   # simulate random blockchain reorgs
@@ -194,8 +196,8 @@ class BlockchainProcessor(Processor):
 
     def read_chunk(self, index):
         with open(self.headers_filename, 'rb') as f:
-            f.seek(index*80)
-            chunk = f.read(80)
+            f.seek(index*self.chunk_size*80)
+            chunk = f.read(self.chunk_size*80)
         return chunk.encode('hex')
 
     def write_header(self, header, sync=True):
@@ -207,7 +209,7 @@ class BlockchainProcessor(Processor):
             self.flush_headers()
 
         with self.cache_lock:
-            chunk_index = header.get('block_height')
+            chunk_index = header.get('block_height')/self.chunk_size
             if self.chunk_cache.get(chunk_index):
                 self.chunk_cache.pop(chunk_index)
 
