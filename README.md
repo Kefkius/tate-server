@@ -1,8 +1,13 @@
-Electrum-server for the Electrum client
+Tate-server for the Tate client
 =========================================
-
-  * Author: Thomas Voegtlin (ThomasV on the bitcointalk forum)
+  
+  * Original Author: Thomas Voegtlin (ThomasV on the bitcointalk forum)
+  * Mazacoin Fork: Tyler Willis (kefkius)
+  * Dockerfile/scripts: Rob Nelson (guruvan)
   * Language: Python
+
+  * Integrated Docker image: [mazaclub/tateserver-mazacoind](https://registry.hub.docker.com/repos/mazaclub/tateserver-mazaclub)
+  * Standalone Docker image [mazaclub/tate-server](https://registry.hub.docker.com/repos/mazaclub/tate-server)
 
 Features
 --------
@@ -27,8 +32,8 @@ Installation
   1. To install and run a server, see INSTALL. For greater
      detail on the installation process, see HOWTO.md.
 
-  2. To start and stop the server, use the 'electrum-server' script
-
+  2. It is highly encouraged to use the provided Dockerfile and Docker or
+     to use a more complete image: [mazaclub/tateserver-mazacoind](https://github.com/mazaclub/docker-tateserver-mazacoind)
 
 
 License
